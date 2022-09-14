@@ -5,6 +5,7 @@ Cara install
 2. Jalankan query pada file me_volumecontroltank.sql pada DB yang talah anda buat.
 3. Jalankan query pada file user_roles.sql pada DB yang talah anda buat.
 4. BUka APP/Application/config/database :
+
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
@@ -26,4 +27,5 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
 5. Done.
