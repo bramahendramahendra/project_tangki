@@ -1,0 +1,96 @@
+<?php templateHeader($dataView); ?>
+
+<!-- Main Content -->
+<section class="content" id="main-content">
+    <div class="body_scroll">
+        <?php $this->load->view('templates/breadcrumb_v', $dataView);?>
+
+        <div class="container-fluid">
+            <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <h2><strong><?=$dataView['subTitlePage'][0]?></strong> <?=$dataView['subTitlePage'][1]?> </h2>
+                                </div>
+                                <div class="col-lg-2" align="right">
+                                    <a href="<?=$dataView['urlForm'];?>" role="button" class="btn btn-primary" id="create-btn"><i class="zmdi zmdi-plus-square"></i> Tambah</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php $this->load->view('templates/alerts_v');?>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <?=form_open($dataView['urlList'], 'id="formList"');?>
+                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">No</th>
+                                                <th width="30%">Gedung</th>
+                                                <th width="30%">Facility Management</th>
+                                                <th width="20%">Jenis Tangki</th>
+                                                <th width="15%">Aksi</th>
+                                            
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th width="5%">No</th>
+                                                <th width="30%">Gedung</th>
+                                                <th width="30%">Facility Management</th>
+                                                <th width="20%">Jenis Tangki</th>
+                                                <th width="15%">Aksi</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            <?php $no=1;?>
+                                            <?php foreach ($dataList as $key => $value) : ?>
+                                                <tr>
+                                                    <td data-title="No"><?=$no++;?></td>
+                                                    <td data-title="Gedung"><?=($value->gedung&&$value->gedung!=""?$value->gedung:"-");?></td>
+                                                    <td data-title="Facility Management"><?=($value->facility_management&&$value->facility_management!=""?$value->facility_management:"-");?></td>
+                                                    <td data-title="Jenis Tangki"><?=($value->jenis_tangki&&$value->jenis_tangki!=""?$value->jenis_tangki:"-");?></td>
+                                                    <td data-title="Aksi">
+                                                        <a href="<?=$dataView['urlForm'].'/update/'.$value->id;?>" class="btn btn-warning waves-effect waves-float btn-sm waves-green update-btn" rel="<?=$value->id;?>"><i class="zmdi zmdi-edit"></i></a>
+                                                        <a href="javascript:void(0);" class="btn btn-danger waves-effect waves-float btn-sm waves-red delete-btn" rel="<?=$value->id;?>"><i class="zmdi zmdi-delete"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach;?>
+                                            
+                                        </tbody>
+                                    </table>
+                                <?=form_close()?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function(){
+        $('.delete-btn').off().click(function(e){
+            var id = $(this).attr('rel');
+            if(confirm('Apakah anda yakin akan menghapus data ini ?')){
+                $.ajax({
+                    url : '<?=$dataView['urlDelete'];?>',
+                    data : 'pages=delete&id='+id,
+                    beforeSend	:function(){
+                        $('.page-loader-wrapper').show();
+                    },
+                    success: function(data){
+                        location.reload();
+                        $('.page-loader-wrapper').hide();
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+    });
+</script>
+
+<?php templateFooter($dataView); ?>

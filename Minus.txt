@@ -1,0 +1,4 @@
+1. Tidak terdapat function Maintainance
+2. Tidak terdapata session time untuk waktu session aplikasi
+3. Tidak terdapat tampilan Page Not FOunt 404
+4. Tidak terdapat security scan sanitize saat mendapat masukkan data
