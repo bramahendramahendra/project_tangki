@@ -9,7 +9,7 @@
                 <div class="col-xl-4 col-lg-12 col-md-12">
                     <div class="card mcard_3">
                         <div class="body">
-                            <a href="profile.html"><img src="<?= base_url('resource/assets/images/profile_av.jpg');?>" class="rounded-circle" alt="profile-image"></a>
+                            <a href="profile.html"><img src="<?=($dataDetail->foto?base_url($dataDetail->foto):base_url('resource/assets/images/profile_av.jpg'));?>" class="rounded-circle" alt="profile-image"></a>
                             <h5 class="mt-3 mb-1"><?=$dataDetail->nik?></h5>
                             <h4 class="m-t-10"><?=$dataDetail->nama?></h4>                            
                             <small class="text-muted"><?=$dataDetail->role_desc?></small>

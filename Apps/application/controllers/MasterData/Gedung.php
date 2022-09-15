@@ -83,6 +83,8 @@ class Gedung extends CI_Controller {
                     'gedung' => $response[0]->gedung,
                     'lokasi' => $response[0]->lokasi,
                     'jenis_tangki' => $response[0]->jenis_tangki,
+                    'panjang' => $response[0]->panjang,
+                    'lebar' => $response[0]->lebar,
                 );
             } else {
                 $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Terjadi kesalahan pada sistem.');		
@@ -116,6 +118,7 @@ class Gedung extends CI_Controller {
             $this->form_validation->set_rules('gedung', 'Gedung', 'required');
             $this->form_validation->set_rules('lokasi', 'Lokasi', 'required');
             $this->form_validation->set_rules('jenis_tangki', 'Jenis Tangki', 'required');
+            $this->form_validation->set_rules('code_sensor', 'Kode Sensor', 'required');
             if ($this->form_validation->run() == TRUE) {
                 $this->load->model('MasterData_m/JenisTangki_m');
                 $dataTemp = $this->JenisTangki_m->getData($this->input->post('jenis_tangki'))->result()[0];
@@ -126,6 +129,9 @@ class Gedung extends CI_Controller {
                     "gedung" => $this->input->post('gedung'),
                     "lokasi" => $this->input->post('lokasi'),
                     "jenis_tangki" => $dataTemp->jenis_tangki,
+                    "panjang" => $dataTemp->panjang,
+                    "lebar" => $dataTemp->lebar,
+                    "code_sensor" => $this->input->post('code_sensor'),
                     'created' => $currDateTime,
                     "updated" => $currDateTime,
                 );
@@ -169,6 +175,7 @@ class Gedung extends CI_Controller {
             } else {
                 $this->form_validation->set_rules('old_jenis_tangki', 'Jenis Tangki', 'required');
             }
+            $this->form_validation->set_rules('code_sensor', 'Kode Sensor', 'required');
             if($this->form_validation->run() == TRUE){
                 if($this->input->post('facility_management')!='') {
                     $temp_facility_management = $this->input->post('facility_management');
@@ -179,8 +186,12 @@ class Gedung extends CI_Controller {
                     $this->load->model('MasterData_m/JenisTangki_m');
                     $dataTemp = $this->JenisTangki_m->getData($this->input->post('jenis_tangki'))->result()[0];
                     $temp_jenis_tangki = $dataTemp->jenis_tangki;
+                    $temp_panjang = $dataTemp->panjang;
+                    $temp_lebar = $dataTemp->lebar;
                 } else {
                     $temp_jenis_tangki = $this->input->post('old_jenis_tangki');
+                    $temp_panjang = $this->input->post('old_panjang');
+                    $temp_lebar = $this->input->post('old_lebar');
                 }
                 
                 $currDateTime = date('Y-m-d H:i:s');
@@ -192,6 +203,9 @@ class Gedung extends CI_Controller {
                     "gedung" => $this->input->post('gedung'),
                     "lokasi" => $this->input->post('lokasi'),
                     "jenis_tangki" => $temp_jenis_tangki,
+                    "panjang" => $temp_panjang,
+                    "lebar" => $temp_lebar,
+                    "code_sensor" => $this->input->post('code_sensor'),
                     "updated" => $currDateTime,
                 );
                 $response = $this->Gedung_m->updateData($dataUpdate,$dataWhere);

@@ -23,10 +23,10 @@
 <script src="<?= base_url('resource/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js');?>"></script> <!-- Bootstrap Tags Input Plugin Js --> 
 <script src="<?= base_url('resource/assets/plugins/nouislider/nouislider.js');?>"></script> <!-- noUISlider Plugin Js -->
 
+<script src="<?= base_url('resource/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js');?>"></script> <!-- Input Mask Plugin Js --> 
 <script src="<?= base_url('resource/assets/plugins/select2/select2.min.js');?>"></script> <!-- Select2 Js -->
 <script src="<?= base_url('resource/assets/plugins/dropify/js/dropify.min.js');?>"></script>
 
 <script src="<?= base_url('resource/assets/bundles/mainscripts.bundle.js');?>"></script>
 <script src="<?= base_url('resource/assets/js/pages/tables/jquery-datatable.js');?>"></script>
-<script src="<?= base_url('resource/assets/js/pages/forms/advanced-form-elements.js');?>"></script> 
 <script src="<?= base_url('resource/assets/js/pages/index.js');?>"></script>

@@ -62,9 +62,21 @@
                                     <div class="col-lg-10 col-md-10 col-sm-8">
                                         <div class="form-group">
                                             <?=form_input(array('type' =>'hidden','name'=>'old_jenis_tangki','id'=>'old_jenis_tangki','value'=>(isset($dataUpdate['jenis_tangki'])&&$dataUpdate['jenis_tangki']!=""?$dataUpdate['jenis_tangki']:"") ));?>
+                                            <?=form_input(array('type' =>'hidden','name'=>'old_panjang','id'=>'old_panjang','value'=>(isset($dataUpdate['panjang'])&&$dataUpdate['panjang']!=""?$dataUpdate['panjang']:"") ));?>
+                                            <?=form_input(array('type' =>'hidden','name'=>'old_lebar','id'=>'old_lebar','value'=>(isset($dataUpdate['lebar'])&&$dataUpdate['lebar']!=""?$dataUpdate['lebar']:"") ));?>
                                             <select name="jenis_tangki" id="jenis_tangki" class="form-control show-tick ms select2 jenis_tangki" data-placeholder="Masukkan Jenis Tangki disini" <?=isset($dataUpdate['jenis_tangki'])&&$dataUpdate['jenis_tangki']!=""?'':'required'?>>
                                                 <option value=""><?=isset($dataUpdate['jenis_tangki'])&&$dataUpdate['jenis_tangki']!=""?$dataUpdate['jenis_tangki']:""?></option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div class="col-lg-2 col-md-2 col-sm-4 form-control-label">
+                                        <label for="code_sensor">Kode Sensor</label>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-8">
+                                        <div class="form-group">
+                                            <input type="text" name="code_sensor" id="code_sensor" class="form-control code_sensor" value="<?=isset($dataUpdate['code_sensor'])&&$dataUpdate['code_sensor']!=""?$dataUpdate['code_sensor']:""?>" placeholder="Masukkan Kode Sensor disini." maxlength="10" required>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +131,39 @@
                 }
             });
         }); 
+    });
 
+    // Select2 selectbox
+    $(function () {
+        $('.select2').select2();
+        $(".search-select").select2({
+            allowClear: true
+        });
+        $("#max-select").select2({
+            placeholder: "Select",
+            maximumSelectionSize: 2,
+        });
+        $("#loading-select").select2({
+            placeholder: "Select",
+            minimumInputLength: 1,
+            query: function (query) {
+                var data = {results: []}, i, j, s;
+                for (i = 1; i < 5; i++) {
+                    s = "";
+                    for (j = 0; j < i; j++) {s = s + query.term;}
+                    data.results.push({id: query.term + i, text: s});
+                }
+                query.callback(data);
+            }
+        });
+        var data=[{id:0,tag:'enhancement'},{id:1,tag:'bug'},{id:2,tag:'duplicate'},{id:3,tag:'invalid'},{id:4,tag:'wontfix'}];
+        function format(item) { return item.tag; }
+        $("#array-select").select2({
+            placeholder: "Select",
+            data:{ results: data, text: 'tag' },
+            formatSelection: format,
+            formatResult: format
+        });
     });
 </script>
 

@@ -16,6 +16,26 @@
                 </div>
             </div>
         </div>
+        <div class="row clearfix">
+            <div class="col-lg-2 col-md-2 col-sm-4 form-control-label">
+                <label for="panjang">Panjang</label>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-8">
+                <div class="form-group">
+                    <input type="text" name="panjang" id="panjang" class="form-control panjang satuan-cm" value="<?=isset($dataUpdate['panjang'])&&$dataUpdate['panjang']!=""?$dataUpdate['panjang']:$this->input->get('panjang')?>" placeholder="Masukkan Panjang disini (sataun CM)." maxlength="50" required>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-2 col-md-2 col-sm-4 form-control-label">
+                <label for="lebar">Lebar</label>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-8">
+                <div class="form-group">
+                    <input type="text" name="lebar" id="lebar" class="form-control lebar satuan-cm" value="<?=isset($dataUpdate['lebar'])&&$dataUpdate['lebar']!=""?$dataUpdate['lebar']:$this->input->get('lebar')?>" placeholder="Masukkan Lebar disini (sataun CM)." maxlength="50" required>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="submit" id="save-btn" class="btn btn-default btn-round waves-effect" rel="<?=(isset($dataView['pages'])&&$dataView['pages']=="update"?$dataView['pages']:"create")?>">Simpan</button>
@@ -26,6 +46,9 @@
 
 <script>
     $(document).ready(function(){
+         //Dollar Money
+        // $demoMaskedInput.find('.satuan-cm').inputmask('99,99 $', { placeholder: '__,__ $' });
+        
         $('#generalModal').on('hide.bs.modal', function (e) {
             location.reload();
         })

@@ -9,7 +9,7 @@
                     <li class="breadcrumb-item"><a href="<?=$dataView['urlBreadcrumb'][2]?>"><?=$dataView['breadcrumb'][2]?></a></li>
                     <li class="breadcrumb-item active"><?=$dataView['breadcrumb'][3]?></li>
                 <?php elseif(count($dataView['breadcrumb']) > 2) : ?>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);"><?=$dataView['breadcrumb'][1]?></a></li>
+                    <li class="breadcrumb-item"><a href="<?=isset($dataView['urlBreadcrumb'][1])&&$dataView['urlBreadcrumb'][1]!=''?$dataView['urlBreadcrumb'][1]:'javascript:void(0);'?>"><?=$dataView['breadcrumb'][1]?></a></li>
                     <li class="breadcrumb-item active"><?=$dataView['breadcrumb'][2]?></li>
                 <?php else : ?>
                     <li class="breadcrumb-item active"><?=$dataView['breadcrumb'][1]?></li>

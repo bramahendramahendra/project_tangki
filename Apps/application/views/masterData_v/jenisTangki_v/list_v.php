@@ -29,14 +29,17 @@
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="80%">Jenis Tangki</th>
+                                                <th width="15%">Panjang</th>
+                                                <th width="15%">Lebar</th>
                                                 <th width="15%">Aksi</th>
-                                            
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th width="5%">No</th>
-                                                <th width="80%">Jenis Tangki</th>
+                                                <th width="50%">Jenis Tangki</th>
+                                                <th width="15%">Panjang</th>
+                                                <th width="15%">Lebar</th>
                                                 <th width="15%">Aksi</th>
                                             </tr>
                                         </tfoot>
@@ -46,6 +49,8 @@
                                                 <tr>
                                                     <td data-title="No"><?=$no++;?></td>
                                                     <td data-title="Jenis Tangki"><?=($value->jenis_tangki&&$value->jenis_tangki!=""?$value->jenis_tangki:"-");?></td>
+                                                    <td data-title="Panjang"><?=($value->panjang&&$value->panjang!=""?$value->panjang:"-");?></td>
+                                                    <td data-title="Lebar"><?=($value->lebar&&$value->lebar!=""?$value->lebar:"-");?></td>
                                                     <td data-title="Aksi">
                                                         <a href="javascript:void(0);" class="btn btn-warning waves-effect waves-float btn-sm waves-green update-btn" rel="<?=$value->id;?>"><i class="zmdi zmdi-edit"></i></a>
                                                         <a href="javascript:void(0);" class="btn btn-danger waves-effect waves-float btn-sm waves-red delete-btn" rel="<?=$value->id;?>"><i class="zmdi zmdi-delete"></i></a>

@@ -113,6 +113,7 @@ class UserAplikasi extends CI_Controller {
                 );
                 $response = $this->UserAplikasi_m->getData($dataWhere)->result();
                 $system['dataUpdate'] = $response[0];
+                echo "<pre>";var_dump($response);echo "</pre>";
             } else {
                 $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Terjadi kesalahan pada sistem.');		
                 redirect('SettingAplikasi/UserAplikasi/list');	
@@ -141,6 +142,7 @@ class UserAplikasi extends CI_Controller {
     {
         // echo "<pre>";var_dump($this->input->post());var_dump($this->input->get());echo "</pre>";
         // die;
+
         if($this->input->post('save') == 'save') {
             $this->form_validation->set_rules('nik', 'NIK', 'required');
             $this->form_validation->set_rules('nama', 'Nama', 'required');
@@ -149,25 +151,64 @@ class UserAplikasi extends CI_Controller {
                 $this->form_validation->set_rules('fm_gedung', 'FM - Gedung', 'required');
             }
             if ($this->form_validation->run() == TRUE) {
-                $currDateTime = date('Y-m-d H:i:s');
-                $dataInsert = array(
-                    "nik" => $this->input->post('nik'),
-                    "nama" => $this->input->post('nama'),
-                    "level_id" => $this->input->post('user_role'),
-                    "id_gedung" => $this->input->post('fm_gedung'),
-                    'created' => $currDateTime,
-                    "updated" => $currDateTime,
-                );
-                $response = $this->UserAplikasi_m->insertData($dataInsert);
-                if($response == TRUE) {
-                    $this->session->set_flashdata('success', '<strong>Sukses.</strong> Data Berhasil disimpan.');	
-                    unset($_POST);
-                    unset($_GET);
-                    redirect('SettingAplikasi/UserAplikasi/list');	
+                $validasi = true;
+                $msgError = "";
+                // var_dump($_FILES['foto']);
+                // die;
+                if (isset($_FILES['foto']) && isset($_FILES['foto']['name']) && $_FILES['foto']['name'] != '') {
+                    // filename 
+                    $oriFilename = trim($_FILES['foto']['name']);
+                    $ext = ltrim(strrchr($oriFilename, "."), ".");
+                    $file_name = $this->input->post('nik').'_'.date('YmdHisu').'.'.$ext;
+                    // path url 
+                    $this->load->library('BuildPath_libs');
+                    $path = $this->buildpath_libs->checkPath('foto/');
+                    $config = array();
+                    $config['upload_path']          = $path;
+                    $config['allowed_types']        = 'jpg|jpeg|png';
+                    $config['file_name']            = $file_name;
+                    $config['overwrite']            = true;
+                    $config['max_size']             = 1024; // 1MB
+                    $config['max_width']            = 1080;
+                    $config['max_height']           = 1080;
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('foto')) {
+                        $msgError = $this->upload->display_errors();
+                        // $uploaded_file = 'tes';
+                        $validasi = false;
+                    } else {
+                        $filename = $path.$file_name;
+                        $validasi = true;
+                    }
+                }
+                // var_dump($uploaded_file);die;
+                if($validasi) {
+                    $currDateTime = date('Y-m-d H:i:s');
+                    $dataInsert = array(
+                        "nik"       => $this->input->post('nik'),
+                        "nama"      => $this->input->post('nama'),
+                        "level_id"  => $this->input->post('user_role'),
+                        "id_gedung" => $this->input->post('fm_gedung'),
+                        "foto"      => $filename,
+                        'created'   => $currDateTime,
+                        "updated"   => $currDateTime,
+                    );
+                    $response = $this->UserAplikasi_m->insertData($dataInsert);
+                    if($response == TRUE) {
+                        $this->session->set_flashdata('success', '<strong>Sukses.</strong> Data Berhasil disimpan.');	
+                        unset($_POST);
+                        unset($_GET);
+                        redirect('SettingAplikasi/UserAplikasi/list');	
+                    } else {
+                        $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Data Gagal disimpan.');		
+                        redirect('SettingAplikasi/UserAplikasi/form');	
+                    }
                 } else {
-                    $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Data Gagal disimpan.');		
+                    $this->session->set_flashdata('danger', $msgError);		
                     redirect('SettingAplikasi/UserAplikasi/form');	
                 }
+               
             } else {
                 $this->session->set_flashdata('post',$_GET);
                 $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Pastikan data tidak boleh kosong.');
@@ -177,41 +218,6 @@ class UserAplikasi extends CI_Controller {
             $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Terjadi kesalahan pada sistem.');		
             redirect('SettingAplikasi/UserAplikasi/form');
         }
-    }
-
-    public function upload_avatar()
-    {
-        if ($this->input->method() === 'post') {
-            // the user id contain dot, so we must remove it
-            $file_name = str_replace('.','',$data['current_user']->id);
-            $config['upload_path']          = FCPATH.'/upload/avatar/';
-            $config['allowed_types']        = 'gif|jpg|jpeg|png';
-            $config['file_name']            = $file_name;
-            $config['overwrite']            = true;
-            $config['max_size']             = 1024; // 1MB
-            $config['max_width']            = 1080;
-            $config['max_height']           = 1080;
-
-            $this->load->library('upload', $config);
-
-            if (!$this->upload->do_upload('avatar')) {
-                $data['error'] = $this->upload->display_errors();
-            } else {
-                $uploaded_data = $this->upload->data();
-
-                $new_data = [
-                    'id' => $data['current_user']->id,
-                    'avatar' => $uploaded_data['file_name'],
-                ];
-        
-                if ($this->profile_model->update($new_data)) {
-                    $this->session->set_flashdata('message', 'Avatar updated!');
-                    redirect(site_url('admin/setting'));
-                }
-            }
-        }
-
-        $this->load->view('admin/setting_upload_avatar.php', $data);
     }
 
     function update()
@@ -287,27 +293,18 @@ class UserAplikasi extends CI_Controller {
             $Validation = TRUE;
             $Validation = $this->formvalidation_libs->setRules($this->input->get('id'), $Validation);
             if($Validation == TRUE){
-               
-                $this->load->model('FacilityManagement_m');
                 $dataWhere = array(
-                    'id_gedung' => $this->input->get('id'),
+                    "id" => $this->input->get('id')
                 );
-                $response = $this->FacilityManagement_m->getData($dataWhere)->result();
-                if(count($response)>0) {
-                    $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Data Gagal dihapus. Terdapat data Gedung pada Facility Management. Pastikan hapus Facility Management tersebut atau uabh ke Data Gedung yang lain.');		
+                $response = $this->UserAplikasi_m->deleteData($dataWhere);
+                if($response == TRUE) {
+                    $this->session->set_flashdata('success', '<strong>Sukses.</strong> Data Berhasil dihapus.');	
+                    unset($_POST);
+                    unset($_GET);
                 } else {
-                    $dataWhere = array(
-                        "id" => $this->input->get('id')
-                    );
-                    $response = $this->Gedung_m->deleteData($dataWhere);
-                    if($response == TRUE) {
-                        $this->session->set_flashdata('success', '<strong>Sukses.</strong> Data Berhasil dihapus.');	
-                        unset($_POST);
-                        unset($_GET);
-                    } else {
-                        $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Data Gagal dihapus.');		
-                    }
+                    $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Data Gagal dihapus.');		
                 }
+                
             } else {
                 $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Pastikan data tidak boleh kosong.');		
             }

@@ -55,6 +55,8 @@ class JenisTangki extends CI_Controller {
             $system['dataUpdate'] = array(
                 'id' => $response[0]->id,
                 'jenis_tangki' => $response[0]->jenis_tangki,
+                'panjang' => $response[0]->panjang,
+                'lebar' => $response[0]->lebar,
             );
         }
         $this->load->view('masterData_v/jenisTangki_v/form_v', $system);
@@ -62,13 +64,19 @@ class JenisTangki extends CI_Controller {
 
     function create()
     {
+        
         if($this->input->get('save') == 'save'){
+            // echo "sistem";die;
             $Validation = TRUE;
             $Validation = $this->formvalidation_libs->setRules($this->input->get('jenis_tangki'), $Validation);
+            $Validation = $this->formvalidation_libs->setRules($this->input->get('panjang'), $Validation);
+            $Validation = $this->formvalidation_libs->setRules($this->input->get('lebar'), $Validation);
             if($Validation == TRUE){
                 $currDateTime = date('Y-m-d H:i:s');
                 $dataInsert = array(
                     "jenis_tangki" => $this->input->get('jenis_tangki'),
+                    "panjang" => $this->input->get('panjang'),
+                    "lebar" => $this->input->get('lebar'),
                     'created' => $currDateTime,
                     "updated" => $currDateTime,
                 );
@@ -87,6 +95,9 @@ class JenisTangki extends CI_Controller {
                 $this->form();
             }
         } else {
+            // echo "teeasd";die;
+            var_dump($this->input->get());
+            var_dump($this->input->post());die;
             $this->session->set_flashdata('danger', '<strong>Gagal !!</strong> Terjadi kesalahan pada sistem.');		
             $this->form();
         }
@@ -98,6 +109,8 @@ class JenisTangki extends CI_Controller {
             $Validation = TRUE;
             $Validation = $this->formvalidation_libs->setRules($this->input->get('id'), $Validation);
             $Validation = $this->formvalidation_libs->setRules($this->input->get('jenis_tangki'), $Validation);
+            $Validation = $this->formvalidation_libs->setRules($this->input->get('panjang'), $Validation);
+            $Validation = $this->formvalidation_libs->setRules($this->input->get('lebar'), $Validation);
             if($Validation == TRUE){
                 $currDateTime = date('Y-m-d H:i:s');
                 $dataWhere = array(
@@ -105,6 +118,8 @@ class JenisTangki extends CI_Controller {
                 );
                 $dataUpdate = array(
                     "jenis_tangki" => $this->input->get('jenis_tangki'),
+                    "panjang" => $this->input->get('panjang'),
+                    "lebar" => $this->input->get('lebar'),
                     "updated" => $currDateTime,
                 );
                 $response = $this->JenisTangki_m->updateData($dataUpdate,$dataWhere);

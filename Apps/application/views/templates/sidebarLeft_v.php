@@ -17,7 +17,7 @@
             </li>
             <li <?=($dataView['menu']==1?'class="active open"':'')?> ><a href="<?= site_url('Home');?>"><i class="zmdi zmdi-home"></i><span>Home</span></a></li>
             <li <?=($dataView['menu']==2?'class="active open"':'')?> ><a href="<?= site_url('Profile');?>"><i class="zmdi zmdi-account"></i><span>Profil</span></a></li>
-            <li <?=($dataView['menu']==3?'class="active open"':'')?> ><a href="<?= site_url('DataTank');?>"><i class="zmdi zmdi-storage"></i><span>Data Tangki BBM</span></a></li>
+            <li <?=($dataView['menu']==3?'class="active open"':'')?> ><a href="<?= site_url('DataTangki');?>"><i class="zmdi zmdi-storage"></i><span>Data Tangki BBM</span></a></li>
             <li <?=($dataView['menu']==4?'class="active open"':'')?> ><a href="<?= site_url('ApproveOrder');?>"><i class="zmdi zmdi-check-all"></i><span>Approve Order Solar</span></a></li>
             <li <?=($dataView['menu']==5?'class="active open"':'')?> ><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-wrench"></i><span>Master Data</span></a>
                 <ul class="ml-menu">
