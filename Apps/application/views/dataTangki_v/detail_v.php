@@ -2,10 +2,12 @@
 
 <?php
     $temp_kapsitasBahanBakar = ($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""?$dataDetail->kapasitas_bahan_bakar:"0"); 
-    $temp_panjang = ($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""?$dataDetail->kapasitas_bahan_bakar:"0"); 
+    $temp_panjang = ($dataDetail->panjang&&$dataDetail->panjang!=""?$dataDetail->panjang:"0"); 
     $temp_lebar = ($dataDetail->lebar&&$dataDetail->lebar!=""?$dataDetail->lebar:"0"); 
     $temp_tinggi = ($dataDetail->tinggi&&$dataDetail->tinggi!=""?$dataDetail->tinggi:"0"); 
     $temp_volume = $temp_panjang*$temp_lebar*$temp_tinggi;
+    // echo $temp_panjang."<br>";
+    // echo var_dump(array($temp_volume, $temp_panjang, $temp_lebar, $temp_tinggi));
     $temp_liter = $temp_volume / 1000;
     $temp_sisa = $temp_kapsitasBahanBakar - $temp_liter;
 
@@ -18,8 +20,9 @@
     <div class="body_scroll">
         <?php $this->load->view('templates/breadcrumb_v', $dataView);?>
         <div class="container-fluid">
+            <?php $this->load->view('templates/alerts_v');?>
             <div class="row clearfix">
-                <div class="<?=($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""&&$temp_persen_sisa&&$temp_persen_sisa!=""&&$temp_persen_digunakan&&$temp_persen_digunakan!=""?'col-lg-7':'col-lg-12');?> col-md-12">
+                <div class="<?=($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""&&$temp_persen_sisa&&$temp_persen_sisa!=""&&$temp_persen_digunakan&&$temp_persen_digunakan!=""?'col-lg-7':'col-lg-12');?> col-md-12">    
                     <div class="card">
                         <div class="header">
                             <h2><strong><?=$dataView['subTitlePage'][0]?></strong> <?=$dataView['subTitlePage'][1]?> </h2>
@@ -47,20 +50,14 @@
                             <p><?=($dataDetail->jenis_tangki&&$dataDetail->jenis_tangki!=""?$dataDetail->jenis_tangki:"-");?></p>
                             <hr>
                             <small class="text-muted">Kapasitas Bahan Bakar: </small>
-                            <p><?=($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""?$dataDetail->kapasitas_bahan_bakar:"-");?></p>
+                            <p><?=($dataDetail->kapasitas_bahan_bakar&&$dataDetail->kapasitas_bahan_bakar!=""?$dataDetail->kapasitas_bahan_bakar." Liter":"-");?></p>
                             <hr>
                           
                             <small class="text-muted">Bahan Bakar digunakan: </small>
-                            <p><?=($temp_liter&&$temp_liter!=""?$temp_liter:"-");?></p>
+                            <p><?=($temp_liter&&$temp_liter!=""?$temp_liter:"-");?> Liter</p>
                             <hr>
                             <small class="text-muted">Sisa Bahan Bakar: </small>
-                            <p><?=($temp_sisa&&$temp_sisa!=""?$temp_sisa:"-");?></p>
-                            <hr>
-
-                            
-                            <p>
-                                <a href="javascript:void(0);" id="request-btn" class="btn btn-warning waves-effect waves-float btn-sm waves-green " rel="" ><i class="zmdi zmdi-edit"></i> Request</a>
-                            </p>
+                            <p><?=($temp_sisa&&$temp_sisa!=""?$temp_sisa:"-");?> Liter</p>
                             <!-- <hr> -->
                         </div>
                     </div>
@@ -73,6 +70,18 @@
                             </div>
                             <div class="body">
                                 <div id="chart-donut" class="c3_chart"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="body">
+                                <small class="text-muted">Maksimal Request Bahan Bakar: </small>
+                                <p>
+                                    <?=($temp_liter&&$temp_liter!=""?$temp_liter:"-");?> Liter 
+                                    <a href="javascript:void(0);" id="request-btn" class="btn btn-warning waves-effect waves-float btn-sm waves-green " rel="" ><i class="zmdi zmdi-edit"></i> Request</a>
+                                </p>
+                                <p>
+                                   
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -122,12 +131,12 @@
             }
         });
 
-        $('#update-btn').off().click(function(e){
+        $('#request-btn').off().click(function(e){
             var id_gedung = $('#id_gedung').val();
             var rel = $(this).attr('rel');
             // alert(rel);
             $.ajax({
-                url  : '<?=$dataView['urlForm'];?>',
+                url  : '<?=$dataView['urlFormRequest'];?>',
                 data : 'pages='+rel+'&id_gedung='+id_gedung,
                 beforeSend	:function(){
                     $('.page-loader-wrapper').show();

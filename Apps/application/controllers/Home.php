@@ -17,7 +17,7 @@ class Home extends CI_Controller {
         $system['dataView']['urlBreadcrumb'] = array(
             site_url('Home'),
         );
-        echo "Dev";
-		// $this->load->view('home_v', $system);
+        // echo "Dev";
+		$this->load->view('home_v', $system);
 	}
 }
