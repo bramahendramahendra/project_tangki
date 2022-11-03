@@ -27,10 +27,11 @@
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="30%">Facility Management</th>
-                                                <th width="40%">Gedung</th>
-                                                <th width="15%">Kapasitas Bahan Bakar</th>
-                                                <th width="15%">Sisa Bahan Bakar</th>
-                                                <th width="15%">Status</th>
+                                                <th width="25%">Gedung</th>
+                                                <th width="10%">Kapasitas Bahan Bakar</th>
+                                                <th width="10%">Sisa Bahan Bakar</th>
+                                                <th width="10%">Request Bahan Bakar</th>
+                                                <!-- <th width="15%">Status</th> -->
                                                 <th width="10%">Aksi</th>
                                             </tr>
                                         </thead>
@@ -38,14 +39,16 @@
                                             <tr>
                                                 <th width="5%">No</th>
                                                 <th width="30%">Facility Management</th>
-                                                <th width="40%">Gedung</th>
-                                                <th width="15%">Kapasitas Bahan Bakar</th>
-                                                <th width="15%">Sisa Bahan Bakar</th>
-                                                <th width="15%">Status</th>
+                                                <th width="25%">Gedung</th>
+                                                <th width="10%">Kapasitas Bahan Bakar</th>
+                                                <th width="10%">Sisa Bahan Bakar</th>
+                                                <th width="10%">Request Bahan Bakar</th>
+                                                <!-- <th width="15%">Status</th> -->
                                                 <th width="10%">Aksi</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                            <?php // echo "<pre>"; var_dump($dataList); echo "</pre>"; ?>
                                             <?php $no=1;?>
                                             <?php foreach ($dataList as $key => $value) : ?>
                                                 <?php
@@ -65,9 +68,10 @@
                                                     <td data-title="Gedung"><?=($value->gedung&&$value->gedung!=""?$value->gedung:"-");?></td>
                                                     <td data-title="Kapasitas Bahan Bakar"><?=($value->kapasitas_bahan_bakar&&$value->kapasitas_bahan_bakar!=""?$value->kapasitas_bahan_bakar:"-");?></td>
                                                     <td data-title="Sisa Bahan Bakar"><?=($temp_sisa&&$temp_sisa!=""?$temp_sisa:"-");?></td>
-                                                    <td data-title="Status"><?=($value->nama_status&&$value->nama_status!=""?$value->nama_status:"-");?></td>
+                                                    <td data-title="Status"><?=($value->jumlah_request&&$value->jumlah_request!=""?$value->jumlah_request:"-");?></td>
                                                     <td data-title="Aksi">
-                                                        <a href="<?=$dataView['urlDetail'].'/'.$value->id_gedung;?>" class="btn btn-info waves-effect waves-float btn-sm waves-green update-btn"><i class="zmdi zmdi-file-text"></i></a>
+                                                        <a href="javascript:void(0);" id="approve-btn" class="btn btn-success waves-effect waves-float btn-sm waves-green update-btn" rel_id_gedung="<?= $value->id_gedung?>" rel_status="1"><i class="zmdi zmdi-check"></i></a>
+                                                        <a href="javascript:void(0);" id="approve-btn" class="btn btn-danger waves-effect waves-float btn-sm waves-green update-btn" rel_id_gedung="<?= $value->id_gedung?>" rel_status="2"><i class="zmdi zmdi-close"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach;?>
@@ -83,5 +87,42 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(document).ready(function(){
+        $('#approve-btn').off().click(function(e){
+            // var id_gedung = $('#id_gedung').val();
+            var id_gedung = $(this).attr('rel_id_gedung');
+            var status = $(this).attr('rel_status');
+            // var status = $('#status').val();
+            // alert(id_gedung);
+            // alert(status);
+            // if(status != 1) {
+            $.ajax({
+                url  : '<?=$dataView['urlApprove'];?>',
+                data : 'status='+status+'&id_gedung='+id_gedung,
+                beforeSend	:function(){
+                    $('.page-loader-wrapper').show();
+                },
+                success: function(data){
+                    // $('#main-content').html(data);
+                    $('#generalModal .modal-dialog').addClass('modal-lg');
+                    $('#generalModal .modal-dialog .modal-content').html(data);
+                    $('#generalModal').modal({'backdrop':'static'});
+                    $('#generalModal').on('hide.bs.modal', function (e) {
+                        location.reload();
+                    })
+                    $('.page-loader-wrapper').hide();
+                }
+            });
+            // } else {
+                // alert('Anda sedang dalam proses pengajuan request bahan bakar.');
+            // }
+           
+            e.preventDefault();
+        });
+
+    });
+</script>
 
 <?php templateFooter($dataView); ?>
